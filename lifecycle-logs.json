@@ -1,0 +1,112 @@
+[
+  {
+    "bundleId": "688a2c3c6074f9c4ff4ba4340ecf057ab031c75f4acce1098d1e677ff1f6ce50",
+    "tipLamports": 7500,
+    "tipAccount": "ADaUMid9yfUytqMBgopwjb2DTLSokTSzL1zt6iGPaS49",
+    "blockhash": "8FhJ7rV3LX8ytrzAWhLWEGJAxarGCEKrz62b3dwKnEPm",
+    "submittedAt": 1780253463162,
+    "status": "failed",
+    "agentReasoning": "As the urgency is medium and there are no recent failures, we choose the midpoint between the p75 and p95 tip percentiles to balance cost and landing probability",
+    "agentConfidence": "high",
+    "failureReason": "expired_blockhash_or_missed_leader"
+  },
+  {
+    "bundleId": "33ab671e2ebcc6731f8cedeeac814d04f9106ab6f8cab6bfde217b2d373cb358",
+    "tipLamports": 10000,
+    "tipAccount": "HFqU5x63VTqvQss8hp11i4wVV8bD44PvwucfZ2bU7gRe",
+    "blockhash": "HBKHr5Fm6kpFYQcPgNxAm1Jr7ogEJ1YtHA72G2XBhcsp",
+    "submittedAt": 1780253825184,
+    "status": "failed",
+    "agentReasoning": "High transaction urgency and recent bundle failures trigger use of p95 tip percentile to maximize landing probability and minimize retries.",
+    "agentConfidence": "high",
+    "failureReason": "expired_blockhash_or_missed_leader"
+  },
+  {
+    "bundleId": "291ff91ac1461e5468bb40822dafafc1e29562dc2063ed8ef6dd7b820b631f10",
+    "tipLamports": 1000,
+    "tipAccount": "ADaUMid9yfUytqMBgopwjb2DTLSokTSzL1zt6iGPaS49",
+    "blockhash": "7uUJiDVVgERuZteAHK1DEbSZgHf2RPTohVMo1w2jt3mJ",
+    "submittedAt": 1780254239497,
+    "status": "failed",
+    "agentReasoning": "Tipping at the minimum due to low urgency and zero recent failures, treating p50 as 1000 when it's actually 0.",
+    "agentConfidence": "low",
+    "failureReason": "expired_blockhash_or_missed_leader"
+  },
+  {
+    "bundleId": "cdfa6d8808c3b48de04d72bcf99fbe6a131f62d96703167bb5f4c735964fd74c",
+    "tipLamports": 5000,
+    "tipAccount": "DttWaMuVvTiduZRnguLF7jNxTgiMBZ1hyAumKUiL2KRL",
+    "blockhash": "6otxfBZkXf57pee2EQW8zVtjmPptj1SEiCABFTkt8jN5",
+    "submittedAt": 1780254330338,
+    "status": "failed",
+    "agentReasoning": "High urgency outweighed defaulting to p75 due to the current network conditions.",
+    "agentConfidence": "high",
+    "failureReason": "expired_blockhash_or_missed_leader"
+  },
+  {
+    "bundleId": "2bd417e5523a3d1a44dae9592f234f65dc1dff8c110a9c770b7b34adb19fb700",
+    "tipLamports": 5000,
+    "tipAccount": "3AVi9Tg9Uo68tJfuvoKvqKNWKkC5wPdSSdeBnizKZ6jT",
+    "blockhash": "HufvwX63Fbu84to21R8zMUmn5pALZ1738nT4BWZcRxCB",
+    "submittedAt": 1780254415603,
+    "status": "failed",
+    "agentReasoning": "Defaulting to medium urgency with p75 as the recommended tip, as recent bundle failures are 2 and it's a medium priority.",
+    "agentConfidence": "medium",
+    "failureReason": "expired_blockhash_or_missed_leader"
+  },
+  {
+    "bundleId": "5d7cad2dbaca5c012f90ea102c6f2e288e1f0ed8c5d2232010380ec9167581bf",
+    "tipLamports": 1000,
+    "tipAccount": "DttWaMuVvTiduZRnguLF7jNxTgiMBZ1hyAumKUiL2KRL",
+    "blockhash": "8R9kJtZrs2TAzxdmEuQQH5Qmsd1gEyXV4rExMNG9KHGD",
+    "submittedAt": 1780254530952,
+    "status": "failed",
+    "agentReasoning": "Minimum tip due to p50 being 0 and low transaction urgency with one bundle failure",
+    "agentConfidence": "low",
+    "failureReason": "expired_blockhash_or_missed_leader"
+  },
+  {
+    "bundleId": "failed_before_submission",
+    "tipLamports": 10000,
+    "tipAccount": "HFqU5x63VTqvQss8hp11i4wVV8bD44PvwucfZ2bU7gRe",
+    "blockhash": "invalid",
+    "submittedAt": 1780255775529,
+    "status": "failed",
+    "failureReason": "invalid_blockhash_format",
+    "agentReasoning": "High urgency and recent bundle failures warrant the higher percentile tip to increase landing probability despite the higher cost.",
+    "agentConfidence": "high"
+  },
+  {
+    "bundleId": "failed_before_submission",
+    "tipLamports": 10000,
+    "tipAccount": "ADuUkR4vqLUMWXxW9gh6D6L8pMSawimctcNZ5pGwDcEt",
+    "blockhash": "invalid",
+    "submittedAt": 1780255791082,
+    "status": "failed",
+    "failureReason": "invalid_blockhash_format",
+    "agentReasoning": "High urgency and recent bundle failures (5) warrant a 95th percentile tip to maximize landing probability despite potential costs.",
+    "agentConfidence": "high"
+  },
+  {
+    "bundleId": "cd87e78d51a28de8f3eb31f11cb9d39356ca5c066ff916fd4226f8e608931aa6",
+    "tipLamports": 1000,
+    "tipAccount": "Cw8CFyM9FkoMi7K7Crf6HNQqf4uEMzpKw6QNghXLvLkY",
+    "blockhash": "G53BPefkV3U42hZHw17tkEFDZddQ17TE1jpHUeZQXMzh",
+    "submittedAt": 1780255950196,
+    "status": "failed",
+    "agentReasoning": "Setting the minimum tip due to low urgency and no bundle failures.",
+    "agentConfidence": "high",
+    "failureReason": "expired_blockhash_or_missed_leader"
+  },
+  {
+    "bundleId": "8710a2800e5cca6b0e03d442174f1b8af8db3ec58b5ee45bff3fbca58c38f54f",
+    "tipLamports": 1000,
+    "tipAccount": "DttWaMuVvTiduZRnguLF7jNxTgiMBZ1hyAumKUiL2KRL",
+    "blockhash": "Hn8jLZFZwV43PawHK7ihP9T7fRChdtnW28FfqMDgDk47",
+    "submittedAt": 1780256023359,
+    "status": "failed",
+    "agentReasoning": "Minimum tipping due to low urgency and recent failures being greater than 0, and no p50 is provided so default to 1000.",
+    "agentConfidence": "low",
+    "failureReason": "expired_blockhash_or_missed_leader"
+  }
+]
