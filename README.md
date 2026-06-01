@@ -1,63 +1,53 @@
 # Solana Smart Transaction Stack
 
-A production-grade Solana transaction infrastructure stack with Jito bundle 
-submission, AI optimized tip intelligence, and full lifecycle tracking.
+A production-ready Solana transaction system that includes Jito bundle submission, AI-enhanced tip intelligence, and complete lifecycle monitoring.
 
 ## Architecture
 https://docs.google.com/document/d/1GOs4ZNnWfpM20Skc1ANKncEotwrPJaIJs7wSqqyDyuM/edit?usp=sharing
 
 ## Stack
 - Node.js / TypeScript
-- Jito TS SDK — bundle construction and submission
-- Yellowstone gRPC — live slot and leader streaming
-- LLaMA 3.1 via Groq — AI tip decision agent
-- @solana/web3.js — transaction construction
+- Jito TS SDK — for bundle creation and submission
+- Yellowstone gRPC — real-time slot and leader streaming
+- LLaMA 3.1 via Groq — AI tip decision maker
+- @solana/web3.js — for transaction creation
 
 ## Setup
 
-1. Clone the repo
-2. Install dependencies:
-\`\`\`bash
-npm install
-\`\`\`
+1. Clone the repository
+2. Install dependencies: `npm install`
 3. Copy `.env.example` to `.env` and fill in your values
-4. Add your `keypair.json` to the project root
-5. Run:
-\`\`\`bash
-npx ts-node src/submit.ts
-\`\`\`
+4. Place your `keypair.json` in the project root
+5. Execute: `npx ts-node src/submit.ts`
+
 
 ## Project Structure
-\`\`\`
+`
 src/
-  agent.ts      — AI tip decision agent
-  bundle.ts     — Jito bundle construction
-  lifecycle.ts  — Bundle result tracking
-  logger.ts     — Log persistence
+  agent.ts      — AI tip decision maker
+  bundle.ts     — Jito bundle creation
+  lifecycle.ts  — tracking bundle results
+  logger.ts     — for log persistence
   stream.ts     — Yellowstone gRPC slot stream
-  submit.ts     — Main entry point
-  wallet.ts     — Keypair loader
+  submit.ts     — primary entry point
+  wallet.ts     — keypair loader
 
-lifecycle-logs.json  — 10 real bundle submission logs
-\`\`\`
+lifecycle-logs.json  — 10 actual bundle submission logs
+`
 
 ## Lifecycle Logs
-10 real bundle submissions with 2 distinct failure types:
-- `expired_blockhash_or_missed_leader` — bundle timed out or Jito leader skipped
-- `invalid_blockhash_format` — bundle construction failed due to bad blockhash
+Ten actual bundle submissions with two types of failures:
+- `expired_blockhash_or_missed_leader`: bundle timed out or Jito leader was skipped
+- `invalid_blockhash_format`: bundle creation failed due to incorrect blockhash
 
-Each log entry includes slot data, timestamps, tip amounts, agent reasoning, 
-and failure classification where applicable.
+Each log entry captures slot data, timestamps, tip amounts, agent reasoning, and failure classification where relevant.
 
 ## AI Agent
-The tip decision agent receives live network data — tip percentiles, current 
-slot, recent failure count, and urgency level — and reasons about the 
-cost vs landing probability tradeoff. Reasoning is visible in every log entry. 
-A 1000 lamport safety floor is enforced in code regardless of agent output.
+The tip decision agent gets live network info, tip percentiles, current slot, recent failure counts, and urgency level also analyzes the cost versus landing probability tradeoff. This reasoning shows up in every log entry. A 1000 lamport safety floor is enforced in the code, no matter what the agent outputs.
 
 ---
 
-## README Questions
+## Questions
 
 # Question 1: What does the delta between processed_at and confirmed_at tell you about network health?
 
