@@ -22,18 +22,17 @@ https://docs.google.com/document/d/1GOs4ZNnWfpM20Skc1ANKncEotwrPJaIJs7wSqqyDyuM/
 
 
 ## Project Structure
-`
 src/
-  agent.ts      — AI tip decision maker
-  bundle.ts     — Jito bundle creation
-  lifecycle.ts  — tracking bundle results
-  logger.ts     — for log persistence
-  stream.ts     — Yellowstone gRPC slot stream
-  submit.ts     — primary entry point
+  agent.ts:     AI tip decision maker
+  bundle.ts:    Jito bundle creation
+  lifecycle.ts: tracking bundle results
+  logger.ts:    for log persistence
+  stream.ts:    Yellowstone gRPC slot stream
+  submit.ts:    primary entry point
   wallet.ts     — keypair loader
 
 lifecycle-logs.json  — 10 actual bundle submission logs
-`
+
 
 ## Lifecycle Logs
 Ten actual bundle submissions with two types of failures:
