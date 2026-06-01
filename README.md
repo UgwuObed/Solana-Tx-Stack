@@ -1,10 +1,10 @@
 # Solana Smart Transaction Stack
 
 A production-grade Solana transaction infrastructure stack with Jito bundle 
-submission, AI-optimized tip intelligence, and full lifecycle tracking.
+submission, AI optimized tip intelligence, and full lifecycle tracking.
 
 ## Architecture
-[paste your Google Docs link here]
+https://docs.google.com/document/d/1GOs4ZNnWfpM20Skc1ANKncEotwrPJaIJs7wSqqyDyuM/edit?usp=sharing
 
 ## Stack
 - Node.js / TypeScript
@@ -59,71 +59,47 @@ A 1000 lamport safety floor is enforced in code regardless of agent output.
 
 ## README Questions
 
-### Question 1: What does the delta between processed_at and confirmed_at tell you about network health?
+# Question 1: What does the delta between processed_at and confirmed_at tell you about network health?
 
-The delta between processed_at and confirmed_at shows how long it takes for a 
-slot to shift from local execution on one validator to a supermajority agreement 
-across the network (66%+ stake).
+The delta between processed_at and confirmed_at shows how long it takes for a slot to shift from local execution on one validator to a supermajority agreement across the network (66%+ stake).  
 
-In a healthy network, this delta usually sits between 400-800ms — about 2 slots. 
-During our submissions, we saw timeouts instead of confirmed deltas, which in 
-itself is a signal: bundles sent to the mainnet block engine with devnet-signed 
-transactions never moved past processed. This confirms that commitment progression 
-needs real network consensus, not just local execution.
+In a healthy network, this delta usually sits between 400-800ms — about 2 slots. During our submissions, we saw timeouts instead of confirmed deltas, which in itself is a signal: bundles sent to the mainnet block engine with devnet-signed transactions never moved past processed. This confirms that commitment progression needs real network consensus, not just local execution.  
 
-A large delta (>2s) indicates:
-- Network congestion or poor validator communication
-- Fork resolution taking more time than usual
-- Possible leader instability
+A large delta (>2s) indicates:  
+- Network congestion or poor validator communication  
+- Fork resolution taking more time than usual  
+- Possible leader instability  
 
-A small delta (<400ms) shows healthy propagation and strong validator 
-participation. For production systems, tracking this delta over time gives you 
-a real-time health signal — hike the tip when congested, lower it when healthy.
+On the flip side, a small delta (<400ms) shows healthy propagation and strong validator participation. For production systems, keeping an eye on this delta over time gives you a real-time health signal. You can decide whether to hike the tip (congested network = more competition) or lower it (healthy network = easier landing).  
 
----
+# Question 2: Why should you never use finalized commitment when fetching a blockhash for a time-sensitive transaction?  
 
-### Question 2: Why should you never use finalized commitment when fetching a blockhash for a time-sensitive transaction?
+Finalized commitment means the blockhash has been confirmed by a supermajority and has a permanent spot on the ledger — it can't be rolled back. But finalized trails the current slot by about 31-32 slots (~13 seconds).  
 
-Finalized commitment means the blockhash has been confirmed by a supermajority 
-and has a permanent spot on the ledger — it can't be rolled back. But finalized 
-trails the current slot by about 31-32 slots (~13 seconds).
+For a time-sensitive transaction, using a finalized blockhash means:  
 
-For a time-sensitive transaction, using a finalized blockhash means:
+1. Your blockhash is already ~13 seconds old by submission time  
+2. A blockhash stays valid for 150 slots (~60 seconds) from when it was created  
+3. You’re effectively burning ~22% of your validity window before submission  
 
-1. Your blockhash is already ~13 seconds old by submission time
-2. A blockhash stays valid for 150 slots (~60 seconds) from when it was created
-3. You're effectively burning ~22% of your validity window before submission
+For Jito bundles, this is even trickier — by the time your bundle reaches the leader, the blockhash might be close to expiring, raising the odds of an expired_blockhash failure.  
 
-For Jito bundles this is worse — by the time your bundle reaches the leader, 
-the blockhash might be close to expiring, raising the odds of an 
-expired_blockhash failure.
+The right commitment for fetching a blockhash is confirmed — it’s practically irreversible (no rollbacks seen at the confirmed level) and only lags by about 2 slots (~800ms), keeping your full validity window intact for submission and retry logic.  
 
-The right commitment for fetching a blockhash is confirmed — practically 
-irreversible (no rollbacks observed at confirmed level) and only lags by about 
-2 slots (~800ms), keeping your full validity window intact for submission and 
-retry logic.
+# Question 3: What happens to your bundle if the Jito leader skips their slot?  
 
----
+When a Jito-connected leader skips their slot, your bundle gets dropped.  
 
-### Question 3: What happens to your bundle if the Jito leader skips their slot?
+Jito bundles are sent to a specific leader's TPU (Transaction Processing Unit) according to the leader schedule. The block engine aims for the next Jito leader within the following 2-4 slots. If that leader skips — whether due to being offline, having poor network connectivity, or lagging on replay — no block gets produced, and your bundle doesn’t make it in.  
 
-When a Jito-connected leader skips their slot, your bundle gets dropped.
+The block engine won’t automatically reroute to the next leader because:  
+1. Bundle atomicity guarantees would break if rerouted mid-stream  
+2. The blockhash in your transactions was valid for the skipped slot window  
 
-Jito bundles are sent to a specific leader's TPU according to the leader 
-schedule. The block engine targets the next Jito leader within the following 
-2-4 slots. If that leader skips — due to being offline, poor connectivity, or 
-lagging on replay — no block gets produced and your bundle doesn't land.
-
-The block engine won't automatically reroute because:
-1. Bundle atomicity guarantees would break if rerouted mid-stream
-2. The blockhash in your transactions was valid for the skipped slot window
-
-In our stack this shows up as `expired_blockhash_or_missed_leader` in the 
-lifecycle log — the most common failure type across our 10 submissions. 
-Correct handling:
-1. Detect the timeout
-2. Fetch a fresh blockhash
-3. Rebuild and re-sign the bundle
+In our stack, this shows up as expired_blockhash_or_missed_leader in the lifecycle log — it ended up being the most common failure type among our 10 submissions. The right handling goes like this:  
+1. Detect the timeout  
+2. Fetch a fresh blockhash  
+3. Rebuild and re-sign the bundle  
 4. Resubmit targeting the next available Jito leader
 
 This is why `getNextScheduledLeader()` from the searcher client matters — you 
