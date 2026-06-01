@@ -29,7 +29,7 @@ src/
   logger.ts:    for log persistence
   stream.ts:    Yellowstone gRPC slot stream
   submit.ts:    primary entry point
-  wallet.ts     — keypair loader
+  wallet.ts:    keypair loader
 
 lifecycle-logs.json  — 10 actual bundle submission logs
 
