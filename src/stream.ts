@@ -5,8 +5,10 @@ import Client, {
 import * as dotenv from "dotenv";
 dotenv.config();
 
+export let currentSlot = 0;
+
 const client = new Client(
-  process.env.GRPC_ENDPOINT!,
+  "https://" + process.env.GRPC_ENDPOINT!,
   process.env.GRPC_TOKEN!,
   { "grpc.max_receive_message_length": 64 * 1024 * 1024 } as any
 );
@@ -35,6 +37,7 @@ async function streamSlots() {
 
   stream.on("data", (data: any) => {
     if (data.slot) {
+      currentSlot = Number(data.slot.slot);
       console.log("Current slot:", data.slot.slot);
       console.log("Status:", data.slot.status);
     }

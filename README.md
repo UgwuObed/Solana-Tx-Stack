@@ -7,10 +7,10 @@ https://docs.google.com/document/d/1GOs4ZNnWfpM20Skc1ANKncEotwrPJaIJs7wSqqyDyuM/
 
 ## Stack
 - Node.js / TypeScript
-- Jito TS SDK — for bundle creation and submission
-- Yellowstone gRPC — real-time slot and leader streaming
-- LLaMA 3.1 via Groq — AI tip decision maker
-- @solana/web3.js — for transaction creation
+- Jito TS SDK: for bundle creation and submission
+- Yellowstone gRPC: real-time slot and leader streaming (live via SolInfra fra.grpc.solinfra.dev:443)
+- LLaMA 3.1 via Groq: AI tip decision maker
+- @solana/web3.js: for transaction creation
 
 ## Setup
 

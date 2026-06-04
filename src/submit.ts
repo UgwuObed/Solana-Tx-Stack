@@ -6,6 +6,7 @@ import { buildBundle } from "./bundle";
 import { trackBundle, LifecycleLog } from "./lifecycle";
 import { agentDecideTip } from "./agent";
 import { saveLog } from "./logger";
+import { currentSlot } from "./stream";
 dotenv.config();
 
 const BLOCK_ENGINE_URL = "frankfurt.mainnet.block-engine.jito.wtf";
@@ -49,21 +50,15 @@ async function submitBundle() {
   const tipAccount = await fetchTipAccount(client);
   console.log("Selected tip account:", tipAccount.toBase58());
 
+  console.log("\nCurrent slot from stream:", currentSlot);
   console.log("\nAsking AI agent for tip decision...");
   const agentDecision = await agentDecideTip({
     tipStats,
-    currentSlot: 0,
-    recentFailures: 1,
-    urgency: "low",
+    currentSlot,
+    recentFailures: 0,
+    urgency: "medium",
   });
   console.log("Agent decision:", JSON.stringify(agentDecision, null, 2));
-
-// const agentDecision = await agentDecideTip({
-//   tipStats,
-//   currentSlot: 0,
-//   recentFailures: 5,
-//   urgency: "high",
-// });
 
   const tipLamports = Math.max(agentDecision.recommendedTip, 1000);
   console.log("Using tip:", tipLamports, "lamports");
@@ -75,14 +70,6 @@ async function submitBundle() {
     tipLamports,
     tipAccount
   );
-
-// const { bundle, blockhash } = await buildBundle(
-//   connection,
-//   wallet,
-//   tipLamports,
-//   tipAccount,
-//   "ExpiredBlockhashXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-// );
 
   console.log("Submitting bundle...");
   const result = await client.sendBundle(bundle);
